@@ -1,0 +1,11 @@
+function MentorCrud() {
+  return (
+    <section className="admin-crud" aria-labelledby="mentor-crud-title">
+      <header className="admin-crud-header"><div><p className="admin-crud-eyebrow">MENTOR MANAGEMENT</p><h1 id="mentor-crud-title">Mentors</h1><p>Review mentor applications and manage expertise profiles.</p></div><button className="admin-crud-primary" type="button">+ Add mentor</button></header>
+      <div className="admin-crud-toolbar"><label htmlFor="mentor-search">Search mentors</label><input id="mentor-search" type="search" placeholder="Search by name or specialty" /><label htmlFor="mentor-status">Status</label><select id="mentor-status" defaultValue="all"><option value="all">All statuses</option><option value="approved">Approved</option><option value="pending">Pending</option></select><button className="admin-crud-secondary" type="button">Filter</button></div>
+      <div className="admin-crud-content"><div className="admin-crud-form-panel"><h2>Add mentor</h2><form><label htmlFor="mentor-crud-name">Full name</label><input id="mentor-crud-name" type="text" placeholder="Enter full name" /><label htmlFor="mentor-crud-email">Email address</label><input id="mentor-crud-email" type="email" placeholder="name@example.com" /><label htmlFor="mentor-crud-specialty">Specialty</label><input id="mentor-crud-specialty" type="text" placeholder="Frontend development" /><button className="admin-crud-primary" type="submit">Save mentor</button></form></div><div className="admin-crud-table-panel"><div className="admin-crud-table-heading"><h2>Mentor directory</h2><span>2 profiles</span></div><div className="admin-crud-table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Specialty</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td>Samira Khan</td><td>samira@example.com</td><td>Backend</td><td><span className="admin-status active-status">Approved</span></td><td><button type="button">Edit</button><button type="button">Delete</button></td></tr><tr><td>Chris Patel</td><td>chris@example.com</td><td>Cloud</td><td><span className="admin-status pending-status">Pending</span></td><td><button type="button">Edit</button><button type="button">Delete</button></td></tr></tbody></table></div></div></div>
+    </section>
+  )
+}
+
+export default MentorCrud
