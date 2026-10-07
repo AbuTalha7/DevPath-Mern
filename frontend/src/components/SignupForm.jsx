@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function SignupForm() {
   return (
     <form className="stakeholder-form" id="signup-form">
@@ -21,6 +23,9 @@ function SignupForm() {
         I agree to the terms and privacy policy.
       </label>
       <button type="submit">Create account</button>
+      <p className="form-helper">
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </form>
   )
 }

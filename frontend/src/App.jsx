@@ -1,15 +1,47 @@
 import "../styles.css";
-import AdminCrud from "./components/AdminCrud.jsx";
-import AdminForm from "./components/AdminForm.jsx";
-import LearnerCrud from "./components/LearnerCrud.jsx";
-import LearnerForm from "./components/LearnerForm.jsx";
-import MentorCrud from "./components/MentorCrud.jsx";
-import MentorForm from "./components/MentorForm.jsx";
-import OrganizationCrud from "./components/OrganizationCrud.jsx";
-import OrganizationForm from "./components/OrganizationForm.jsx";
+import { Link, Route, Routes } from "react-router-dom";
+import {
+  AdminApprovals,
+  AdminDashboard,
+  AdminHome,
+  AdminReports,
+  AdminSettings,
+  AdminTablePage,
+} from "./components/AdminDashboard.jsx";
+import LoginForm from "./components/LoginForm.jsx";
 import SignupForm from "./components/SignupForm.jsx";
 
 function App() {
+  return (
+    <Routes>
+      <Route path="/admin" element={<AdminDashboard />}>
+        <Route index element={<AdminHome />} />
+        <Route path="users" element={<AdminTablePage section="users" />} />
+        <Route path="learners" element={<AdminTablePage section="learners" />} />
+        <Route path="mentors" element={<AdminTablePage section="mentors" />} />
+        <Route path="organizations" element={<AdminTablePage section="organizations" />} />
+        <Route path="roadmaps" element={<AdminTablePage section="roadmaps" />} />
+        <Route path="content" element={<AdminTablePage section="content" />} />
+        <Route path="approvals" element={<AdminApprovals />} />
+        <Route path="reports" element={<AdminReports />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
+      <Route path="/login" element={<AuthPage><LoginForm /></AuthPage>} />
+      <Route path="/signup" element={<AuthPage><SignupForm /></AuthPage>} />
+      <Route path="*" element={<HomePage />} />
+    </Routes>
+  );
+}
+
+function AuthPage({ children }) {
+  return (
+    <main className="auth-page">
+      {children}
+    </main>
+  );
+}
+
+function HomePage() {
   return (
     <>
       <main>
@@ -28,15 +60,18 @@ function App() {
               <a className="nav-search" href="#roadmaps">
                 ⌕ <span>Search</span>
               </a>
+              <Link className="login-link" to="/admin">
+                Admin Dashboard
+              </Link>
               <a className="upgrade-link" href="#community">
                 ✦ Upgrade
               </a>
-              <a className="login-link" href="#community">
+              <Link className="login-link" to="/login">
                 Log in
-              </a>
-              <a className="button button-small" href="#community">
+              </Link>
+              <Link className="button button-small" to="/signup">
                 Sign Up
-              </a>
+              </Link>
             </div>
           </nav>
           <div className="hero-content page-width" id="top">
@@ -44,9 +79,15 @@ function App() {
             <p className="hero-copy">
               Skill up with community created roadmaps, guides, and courses.
             </p>
-            <a className="search-bar" href="#roadmaps">
-              <span>⌕</span> What do you want to learn today? <kbd>Ctrl K</kbd>
-            </a>
+            <label className="search-bar" htmlFor="roadmap-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                id="roadmap-search"
+                type="search"
+                placeholder="What do you want to learn today?"
+              />
+              <kbd>Ctrl K</kbd>
+            </label>
             <p className="search-note">
               Search available roadmaps or learn anything with AI.
             </p>
@@ -91,303 +132,303 @@ function App() {
             <span>30 roadmaps</span>
           </div>
           <div className="topic-grid">
-            <a className="featured-card" href="#guides">
+            <Link className="featured-card" to="/roadmaps/learn-with-ai">
               ✣ &nbsp; Learn with AI
-            </a>
-            <a href="#guides">
-              Frontend <small>♧</small>
-            </a>
-            <a href="#guides">
-              Backend <small>♧</small>
-            </a>
-            <a href="#guides">
-              Full Stack <small>♧</small>
-            </a>
-            <a href="#guides">
-              Android <small>♧</small>
-            </a>
-            <a href="#guides">
-              DevOps <small>♧</small>
-            </a>
-            <a href="#guides">
-              DevSecOps <small>♧</small>
-            </a>
-            <a href="#guides">
-              Data Analyst <small>♧</small>
-            </a>
-            <a href="#guides">
-              SEO <small>♧</small>
-            </a>
-            <a href="#guides">
-              AI Engineer <small>♧</small>
-            </a>
-            <a href="#guides">
-              AI and Data Scientist <small>♧</small>
-            </a>
-            <a href="#guides">
-              Data Engineer <small>♧</small>
-            </a>
-            <a href="#guides">
-              Machine Learning <small>♧</small>
-            </a>
-            <a href="#guides">
-              Product Design <small>♧</small>
-            </a>
-            <a href="#guides">
-              PostgreSQL <small>♧</small>
-            </a>
-            <a href="#guides">
-              iOS <small>♧</small>
-            </a>
-            <a href="#guides">
-              Blockchain <small>♧</small>
-            </a>
-            <a href="#guides">
-              QA <small>♧</small>
-            </a>
-            <a href="#guides">
-              Software Architect <small>♧</small>
-            </a>
-            <a href="#guides">
-              Cyber Security <small>♧</small>
-            </a>
-            <a href="#guides">
-              UX Design <small>♧</small>
-            </a>
-            <a href="#guides">
-              Technical Writer <small>♧</small>
-            </a>
-            <a href="#guides">
-              Game Developer <small>♧</small>
-            </a>
-            <a href="#guides">
-              Server Side Game Developer <small>♧</small>
-            </a>
-            <a href="#guides">
-              MLOps <small>♧</small>
-            </a>
-            <a href="#guides">
-              Product Manager <small>♧</small>
-            </a>
-            <a href="#guides">
-              Engineering Manager <small>♧</small>
-            </a>
-            <a href="#guides">
-              Developer Relations <small>♧</small>
-            </a>
-            <a href="#guides">
-              BI Analyst <small>♧</small>
-            </a>
-            <a href="#guides">
-              Network Engineer <small>♧</small>
-            </a>
-            <a href="#guides">
-              Forward Deployed Engineer <small>♧</small>
-            </a>
+            </Link>
+            <Link to="/roadmaps/frontend">
+              Frontend <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/backend">
+              Backend <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/full-stack">
+              Full Stack <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/android">
+              Android <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/devops">
+              DevOps <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/devsecops">
+              DevSecOps <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/data-analyst">
+              Data Analyst <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/seo">
+              SEO <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ai-engineer">
+              AI Engineer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ai-and-data-scientist">
+              AI and Data Scientist <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/data-engineer">
+              Data Engineer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/machine-learning">
+              Machine Learning <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/product-design">
+              Product Design <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/postgresql">
+              PostgreSQL <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ios">
+              iOS <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/blockchain">
+              Blockchain <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/qa">
+              QA <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/software-architect">
+              Software Architect <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/cyber-security">
+              Cyber Security <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ux-design">
+              UX Design <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/technical-writer">
+              Technical Writer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/game-developer">
+              Game Developer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/server-side-game-developer">
+              Server Side Game Developer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/mlops">
+              MLOps <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/product-manager">
+              Product Manager <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/engineering-manager">
+              Engineering Manager <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/developer-relations">
+              Developer Relations <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/bi-analyst">
+              BI Analyst <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/network-engineer">
+              Network Engineer <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/forward-deployed-engineer">
+              Forward Deployed Engineer <small>🔖</small>
+            </Link>
           </div>
           <div className="topic-heading second-heading">
             <h3>Skill-based</h3>
             <span>59 roadmaps</span>
           </div>
           <div className="topic-grid">
-            <a href="#guides">
-              Claude Code <small>♧</small>
-            </a>
-            <a href="#guides">
-              Vibe Coding <small>♧</small>
-            </a>
-            <a href="#guides">
-              Python <small>♧</small>
-            </a>
-            <a href="#guides">
-              Python for Data Analysis <small>♧</small>
-            </a>
-            <a href="#guides">
-              R Programming <small>♧</small>
-            </a>
-            <a href="#guides">
-              Computer Science <small>♧</small>
-            </a>
-            <a href="#guides">
-              SQL <small>♧</small>
-            </a>
-            <a href="#guides">
-              OpenClaw <small>♧</small>
-            </a>
-            <a href="#guides">
-              React <small>♧</small>
-            </a>
-            <a href="#guides">
-              Vue <small>♧</small>
-            </a>
-            <a href="#guides">
-              Angular <small>♧</small>
-            </a>
-            <a href="#guides">
-              JavaScript <small>♧</small>
-            </a>
-            <a href="#guides">
-              TypeScript <small>♧</small>
-            </a>
-            <a href="#guides">
-              Node.js <small>♧</small>
-            </a>
-            <a href="#guides">
-              System Design <small>♧</small>
-            </a>
-            <a href="#guides">
-              LeetCode <small>♧</small>
-            </a>
-            <a href="#guides">
-              Java <small>♧</small>
-            </a>
-            <a href="#guides">
-              ASP.NET Core <small>♧</small>
-            </a>
-            <a href="#guides">
-              API Design <small>♧</small>
-            </a>
-            <a href="#guides">
-              Power BI <small>♧</small>
-            </a>
-            <a href="#guides">
-              Spring Boot <small>♧</small>
-            </a>
-            <a href="#guides">
-              Flutter <small>♧</small>
-            </a>
-            <a href="#guides">
-              C Programming <small>♧</small>
-            </a>
-            <a href="#guides">
-              C++ <small>♧</small>
-            </a>
-            <a href="#guides">
-              Rust <small>♧</small>
-            </a>
-            <a href="#guides">
-              Go Roadmap <small>♧</small>
-            </a>
-            <a href="#guides">
-              AI Product Builders <small>♧</small>
-            </a>
-            <a href="#guides">
-              Design and Architecture <small>♧</small>
-            </a>
-            <a href="#guides">
-              GraphQL <small>♧</small>
-            </a>
-            <a href="#guides">
-              React Native <small>♧</small>
-            </a>
-            <a href="#guides">
-              Design System <small>♧</small>
-            </a>
-            <a href="#guides">
-              Prompt Engineering <small>♧</small>
-            </a>
-            <a href="#guides">
-              MongoDB <small>♧</small>
-            </a>
-            <a href="#guides">
-              Linux <small>♧</small>
-            </a>
-            <a href="#guides">
-              Kubernetes <small>♧</small>
-            </a>
-            <a href="#guides">
-              Docker <small>♧</small>
-            </a>
-            <a href="#guides">
-              AWS <small>♧</small>
-            </a>
-            <a href="#guides">
-              Terraform <small>♧</small>
-            </a>
-            <a href="#guides">
-              Data Structures &amp; Algorithms <small>♧</small>
-            </a>
-            <a href="#guides">
-              Redis <small>♧</small>
-            </a>
-            <a href="#guides">
-              Git and GitHub <small>♧</small>
-            </a>
-            <a href="#guides">
-              PHP <small>♧</small>
-            </a>
-            <a href="#guides">
-              Cloudflare <small>♧</small>
-            </a>
-            <a href="#guides">
-              AI Red Teaming <small>♧</small>
-            </a>
-            <a href="#guides">
-              AI Agents <small>♧</small>
-            </a>
-            <a href="#guides">
-              Next.js <small>♧</small>
-            </a>
-            <a href="#guides">
-              Code Review <small>♧</small>
-            </a>
-            <a href="#guides">
-              Kotlin <small>♧</small>
-            </a>
-            <a href="#guides">
-              HTML <small>♧</small>
-            </a>
-            <a href="#guides">
-              CSS <small>♧</small>
-            </a>
-            <a href="#guides">
-              Swift &amp; Swift UI <small>♧</small>
-            </a>
-            <a href="#guides">
-              Shell / Bash <small>♧</small>
-            </a>
-            <a href="#guides">
-              Laravel <small>♧</small>
-            </a>
-            <a href="#guides">
-              Elasticsearch <small>♧</small>
-            </a>
-            <a href="#guides">
-              WordPress <small>♧</small>
-            </a>
-            <a href="#guides">
-              Django <small>♧</small>
-            </a>
-            <a href="#guides">
-              Ruby <small>♧</small>
-            </a>
-            <a href="#guides">
-              Ruby on Rails <small>♧</small>
-            </a>
-            <a href="#guides">
-              Scala <small>♧</small>
-            </a>
+            <Link to="/roadmaps/claude-code">
+              Claude Code <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/vibe-coding">
+              Vibe Coding <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/python">
+              Python <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/python-for-data-analysis">
+              Python for Data Analysis <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/r-programming">
+              R Programming <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/computer-science">
+              Computer Science <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/sql">
+              SQL <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/openclaw">
+              OpenClaw <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/react">
+              React <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/vue">
+              Vue <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/angular">
+              Angular <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/javascript">
+              JavaScript <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/typescript">
+              TypeScript <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/node-js">
+              Node.js <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/system-design">
+              System Design <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/leetcode">
+              LeetCode <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/java">
+              Java <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/asp-net-core">
+              ASP.NET Core <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/api-design">
+              API Design <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/power-bi">
+              Power BI <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/spring-boot">
+              Spring Boot <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/flutter">
+              Flutter <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/c-programming">
+              C Programming <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/c">
+              C++ <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/rust">
+              Rust <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/go-roadmap">
+              Go Roadmap <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ai-product-builders">
+              AI Product Builders <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/design-and-architecture">
+              Design and Architecture <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/graphql">
+              GraphQL <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/react-native">
+              React Native <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/design-system">
+              Design System <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/prompt-engineering">
+              Prompt Engineering <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/mongodb">
+              MongoDB <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/linux">
+              Linux <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/kubernetes">
+              Kubernetes <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/docker">
+              Docker <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/aws">
+              AWS <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/terraform">
+              Terraform <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/data-structures-algorithms">
+              Data Structures &amp; Algorithms <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/redis">
+              Redis <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/git-and-github">
+              Git and GitHub <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/php">
+              PHP <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/cloudflare">
+              Cloudflare <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ai-red-teaming">
+              AI Red Teaming <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ai-agents">
+              AI Agents <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/next-js">
+              Next.js <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/code-review">
+              Code Review <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/kotlin">
+              Kotlin <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/html">
+              HTML <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/css">
+              CSS <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/swift-swift-ui">
+              Swift &amp; Swift UI <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/shell-bash">
+              Shell / Bash <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/laravel">
+              Laravel <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/elasticsearch">
+              Elasticsearch <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/wordpress">
+              WordPress <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/django">
+              Django <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ruby">
+              Ruby <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/ruby-on-rails">
+              Ruby on Rails <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/scala">
+              Scala <small>🔖</small>
+            </Link>
           </div>
           <div className="topic-heading second-heading">
             <h3>Best Practices</h3>
             <span>5 roadmaps</span>
           </div>
           <div className="topic-grid">
-            <a href="#guides">
-              AWS <small>♧</small>
-            </a>
-            <a href="#guides">
-              API Security <small>♧</small>
-            </a>
-            <a href="#guides">
-              Backend Performance <small>♧</small>
-            </a>
-            <a href="#guides">
-              Frontend Performance <small>♧</small>
-            </a>
-            <a href="#guides">
-              Code Review <small>♧</small>
-            </a>
+            <Link to="/roadmaps/aws">
+              AWS <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/api-security">
+              API Security <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/backend-performance">
+              Backend Performance <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/frontend-performance">
+              Frontend Performance <small>🔖</small>
+            </Link>
+            <Link to="/roadmaps/code-review">
+              Code Review <small>🔖</small>
+            </Link>
           </div>
         </section>
 
@@ -470,7 +511,7 @@ function App() {
           </a>
           <div className="footer-links">
             <a href="#roadmaps">Roadmaps</a>
-            <a href="#guides">Guides</a>
+            <Link to="/roadmaps/guides">Guides</Link>
             <a href="#community">Community</a>
             <a href="#about">About</a>
           </div>
@@ -484,15 +525,9 @@ function App() {
           </div>
         </div>
       </footer>
-      {/* <AdminCrud />
-      <LearnerCrud />
-      <MentorCrud /> */}
-      {/* <OrganizationCrud /> */}
-      {/* <AdminForm />
-      <LearnerForm />
-      <MentorForm />
-      <OrganizationForm />
-      <SignupForm /> */}
+      
+      <section className="stakeholder-forms" aria-label="Stakeholder forms">
+      </section>
     </>
   );
 }
