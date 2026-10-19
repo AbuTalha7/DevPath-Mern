@@ -8,8 +8,19 @@ import {
   AdminSettings,
   AdminTablePage,
 } from "./components/AdminDashboard.jsx";
+import {
+  AdminContentForm,
+  AdminRoadmapForm,
+  AdminUserForm,
+  ForgotPasswordForm,
+  MentorApplicationForm,
+  OrganizationForm,
+  ProfileForm,
+  ResetPasswordForm,
+} from "./components/AdditionalForms.jsx";
 import LoginForm from "./components/LoginForm.jsx";
 import SignupForm from "./components/SignupForm.jsx";
+import AuthLayout from "./components/AuthLayout.jsx";
 
 function App() {
   return (
@@ -19,26 +30,92 @@ function App() {
         <Route path="users" element={<AdminTablePage section="users" />} />
         <Route path="learners" element={<AdminTablePage section="learners" />} />
         <Route path="mentors" element={<AdminTablePage section="mentors" />} />
-        <Route path="organizations" element={<AdminTablePage section="organizations" />} />
+        <Route
+          path="organizations"
+          element={<AdminTablePage section="organizations" />}
+        />
         <Route path="roadmaps" element={<AdminTablePage section="roadmaps" />} />
         <Route path="content" element={<AdminTablePage section="content" />} />
+        <Route path="users/new" element={<AdminUserForm />} />
+        <Route path="users/edit" element={<AdminUserForm mode="edit" />} />
+        <Route path="learners/new" element={<AdminUserForm defaultRole="learner" entityLabel="learner" />} />
+        <Route path="learners/edit" element={<AdminUserForm mode="edit" defaultRole="learner" entityLabel="learner" />} />
+        <Route path="mentors/new" element={<AdminUserForm defaultRole="mentor" entityLabel="mentor" />} />
+        <Route path="mentors/edit" element={<AdminUserForm mode="edit" defaultRole="mentor" entityLabel="mentor" />} />
+        <Route path="organizations/new" element={<AdminUserForm defaultRole="organization" entityLabel="organization" />} />
+        <Route path="organizations/edit" element={<AdminUserForm mode="edit" defaultRole="organization" entityLabel="organization" />} />
+        <Route path="roadmaps/new" element={<AdminRoadmapForm />} />
+        <Route path="roadmaps/edit" element={<AdminRoadmapForm mode="edit" />} />
+        <Route path="content/new" element={<AdminContentForm />} />
+        <Route path="content/edit" element={<AdminContentForm mode="edit" />} />
         <Route path="approvals" element={<AdminApprovals />} />
         <Route path="reports" element={<AdminReports />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>
-      <Route path="/login" element={<AuthPage><LoginForm /></AuthPage>} />
-      <Route path="/signup" element={<AuthPage><SignupForm /></AuthPage>} />
+      <Route
+        path="/login"
+        element={
+          <AuthLayout pageLabel="Log in">
+            <LoginForm />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <AuthLayout pageLabel="Sign up">
+            <SignupForm />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <AuthLayout pageLabel="Reset password">
+            <ForgotPasswordForm />
+          </AuthLayout>
+        }
+      />
+      <Route path="/reset-password" element={<AuthPage><ResetPasswordForm /></AuthPage>} />
+      <Route
+        path="/profile/setup"
+        element={
+          <AuthLayout pageLabel="Complete your profile">
+            <ProfileForm mode="setup" />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/profile/edit"
+        element={
+          <AuthLayout pageLabel="Edit your profile">
+            <ProfileForm mode="edit" />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/mentor/apply"
+        element={
+          <AuthLayout pageLabel="Mentor application">
+            <MentorApplicationForm />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/organization/setup"
+        element={
+          <AuthLayout pageLabel="Organization setup">
+            <OrganizationForm />
+          </AuthLayout>
+        }
+      />
       <Route path="*" element={<HomePage />} />
     </Routes>
   );
 }
 
-function AuthPage({ children }) {
-  return (
-    <main className="auth-page">
-      {children}
-    </main>
-  );
+function AuthPage({ children, className = "" }) {
+  return <main className={`auth-page ${className}`.trim()}>{children}</main>;
 }
 
 function HomePage() {
@@ -46,26 +123,30 @@ function HomePage() {
     <>
       <main>
         <section className="hero-section">
-          <nav className="site-nav page-width" aria-label="Main navigation">
-            <a className="brand" href="#top" aria-label="DevPath home">
+          <nav className="site-nav" aria-label="Main navigation">
+            <Link className="brand" to="#top" aria-label="DevPath home">
               <img className="brand-logo" src="/logo.png" alt="DevPath" />
-            </a>
+            </Link>
             <div className="nav-links">
-              <a href="#roadmaps">Roadmaps</a>
-              <a href="#guides">AI Tutor</a>
-              <a href="#community">Guides</a>
-              <a href="#about">Newsletters</a>
+              <Link className="nav-link" to="#roadmaps">Roadmaps</Link>
+              <Link className="nav-link" to="#guides">AI Tutor</Link>
+              <Link className="nav-link" to="#community">Guides</Link>
+              <Link className="nav-link" to="#about">Newsletters</Link>
             </div>
             <div className="nav-actions">
-              <a className="nav-search" href="#roadmaps">
-                ⌕ <span>Search</span>
-              </a>
-              <Link className="login-link" to="/admin">
-                Admin Dashboard
+              <Link className="nav-search" to="#roadmaps">
+                <span aria-hidden="true">⌕</span>
+                <span className="nav-search-text">Search</span>
+                <kbd className="nav-search-kbd">⌘ K</kbd>
               </Link>
-              <a className="upgrade-link" href="#community">
-                ✦ Upgrade
-              </a>
+              <span className="nav-divider" aria-hidden="true" />
+              <Link className="login-link" to="/admin">
+                Admin
+              </Link>
+              <Link className="upgrade-link" to="#community">
+                <span className="upgrade-dot" aria-hidden="true" />
+                Upgrade
+              </Link>
               <Link className="login-link" to="/login">
                 Log in
               </Link>
@@ -74,23 +155,47 @@ function HomePage() {
               </Link>
             </div>
           </nav>
-          <div className="hero-content page-width" id="top">
-            <h1>Developer Roadmaps</h1>
-            <p className="hero-copy">
-              Skill up with community created roadmaps, guides, and courses.
-            </p>
-            <label className="search-bar" htmlFor="roadmap-search">
-              <span aria-hidden="true">⌕</span>
-              <input
-                id="roadmap-search"
-                type="search"
-                placeholder="What do you want to learn today?"
-              />
-              <kbd>Ctrl K</kbd>
-            </label>
-            <p className="search-note">
-              Search available roadmaps or learn anything with AI.
-            </p>
+          <div className="hero-layout">
+            <div className="hero-content" id="top">
+              <span className="hero-badge">✦ New: AI-powered roadmaps</span>
+              <h1>Developer <span className="hero-title-accent">Roadmaps</span></h1>
+              <p className="hero-copy">
+                Skill up with <span className="hero-accent">community</span> created roadmaps,{" "}
+                <span className="hero-accent">guides</span>, and courses.
+              </p>
+              <div className="search-bar">
+                <span aria-hidden="true">⌕</span>
+                <input
+                  id="roadmap-search"
+                  type="search"
+                  placeholder="What do you want to learn today?"
+                  aria-label="Search roadmaps"
+                />
+                <kbd>Ctrl K</kbd>
+                <button type="button">Search</button>
+              </div>
+              <p className="search-note">
+                Search available roadmaps or learn anything with AI.
+              </p>
+            </div>
+            <div className="hero-card-stack" aria-label="Featured roadmaps">
+              <Link className="hero-roadmap-card hero-card-frontend" to="/roadmaps/frontend">
+                <strong>Frontend</strong>
+                <span>Build polished experiences for the web.</span>
+              </Link>
+              <Link className="hero-roadmap-card hero-card-ai" to="/roadmaps/learn-with-ai">
+                <strong>Learn with AI</strong>
+                <span>Your next step, guided by AI.</span>
+              </Link>
+              <Link className="hero-roadmap-card hero-card-python" to="/roadmaps/python">
+                <strong>Python</strong>
+                <span>Start building with a versatile language.</span>
+              </Link>
+              <Link className="hero-roadmap-card hero-card-devops" to="/roadmaps/devops">
+                <strong>DevOps</strong>
+                <span>Bring code from build to delivery.</span>
+              </Link>
+            </div>
           </div>
           <div className="hero-grid" aria-hidden="true">
             <span />
@@ -108,25 +213,27 @@ function HomePage() {
               role="tablist"
               aria-label="Browse content"
             >
-              <a
+              <Link
                 className="active"
-                href="#roadmaps"
+                to="#roadmaps"
                 role="tab"
                 aria-selected="true"
               >
                 Roadmaps
-              </a>
-              <a href="#guides" role="tab">
+              </Link>
+              <Link to="#guides" role="tab">
                 Lesson Packs <small>NEW</small>
-              </a>
-              <a href="#community" role="tab">
+              </Link>
+              <Link to="#community" role="tab">
                 Project Ideas
-              </a>
+              </Link>
             </div>
-            <a className="text-link" href="#community">
+            <Link className="text-link" to="#community">
               ✦ Go Pro
-            </a>
+            </Link>
           </div>
+          <div className="roadmap-content-grid">
+          <div className="roadmap-group roadmap-group-role">
           <div className="topic-heading">
             <h3>Role-based</h3>
             <span>30 roadmaps</span>
@@ -226,6 +333,8 @@ function HomePage() {
               Forward Deployed Engineer <small>🔖</small>
             </Link>
           </div>
+          </div>
+          <div className="roadmap-group roadmap-group-skill">
           <div className="topic-heading second-heading">
             <h3>Skill-based</h3>
             <span>59 roadmaps</span>
@@ -409,6 +518,8 @@ function HomePage() {
               Scala <small>🔖</small>
             </Link>
           </div>
+          </div>
+          <div className="roadmap-group roadmap-group-practices">
           <div className="topic-heading second-heading">
             <h3>Best Practices</h3>
             <span>5 roadmaps</span>
@@ -430,6 +541,8 @@ function HomePage() {
               Code Review <small>🔖</small>
             </Link>
           </div>
+          </div>
+          </div>
         </section>
 
         <section className="guides-section" id="guides">
@@ -439,95 +552,101 @@ function HomePage() {
                 <p className="eyebrow">FIELD NOTES</p>
                 <h2>Guides for the road ahead.</h2>
               </div>
-              <a className="text-link" href="#community">
+              <Link className="text-link" to="#community">
                 See all guides <span>↗</span>
-              </a>
+              </Link>
             </div>
             <div className="guide-list">
-              <a href="#community">
+              <Link to="#community">
                 <span className="guide-number">01</span>
                 <strong>How to set environment variables in Python</strong>
                 <span className="guide-type">Tutorial · 8 min</span>
-              </a>
-              <a href="#community">
+              </Link>
+              <Link to="#community">
                 <span className="guide-number">02</span>
                 <strong>
                   From zero to your first open-source contribution
                 </strong>
                 <span className="guide-type">Guide · 12 min</span>
-              </a>
-              <a href="#community">
+              </Link>
+              <Link to="#community">
                 <span className="guide-number">03</span>
                 <strong>What actually happens when you visit a website?</strong>
                 <span className="guide-type">Deep dive · 10 min</span>
-              </a>
-              <a href="#community">
+              </Link>
+              <Link to="#community">
                 <span className="guide-number">04</span>
                 <strong>Building a portfolio that gets you noticed</strong>
                 <span className="guide-type">Career · 6 min</span>
-              </a>
+              </Link>
             </div>
-            <a className="button dark-button" href="#community">
+            <Link className="button dark-button" to="#community">
               Browse the library <span>→</span>
-            </a>
+            </Link>
           </div>
         </section>
         <section className="community-section" id="community">
           <div className="page-width community-inner">
-            <p className="eyebrow">A BETTER WAY TO LEARN</p>
-            <h2>
-              Keep moving,
-              <br />
-              <em>together.</em>
-            </h2>
-            <p>
-              Join thousands of builders sharing notes, asking better questions,
-              and making the next step feel a little less lonely.
-            </p>
-            <div className="stats">
-              <div>
-                <strong>369K</strong>
-                <span>learners exploring</span>
-              </div>
-              <div>
-                <strong>3.2M</strong>
-                <span>lessons completed</span>
-              </div>
-              <div>
-                <strong>52K</strong>
-                <span>members connected</span>
-              </div>
+            <div className="community-copy">
+              <p className="eyebrow">A BETTER WAY TO LEARN</p>
+              <h2>
+                Keep moving,
+                <br />
+                <em>together.</em>
+              </h2>
+              <p>
+                Join thousands of builders sharing notes, asking better questions,
+                and making the next step feel a little less lonely.
+              </p>
             </div>
-            <a className="button light-button" href="#about">
-              Join the community <span>→</span>
-            </a>
+            <div className="community-aside">
+              <div className="stats">
+                <div>
+                  <strong>369K</strong>
+                  <span>learners exploring</span>
+                </div>
+                <div>
+                  <strong>3.2M</strong>
+                  <span>lessons completed</span>
+                </div>
+                <div>
+                  <strong>52K</strong>
+                  <span>members connected</span>
+                </div>
+              </div>
+              <Link className="button light-button" to="#about">
+                Join the community <span>→</span>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
       <footer id="about">
         <div className="page-width footer-top">
-          <a className="brand" href="#top">
+          <Link className="brand" to="#top">
             <img className="brand-logo" src="/logo.png" alt="DevPath" />
-          </a>
+          </Link>
           <div className="footer-links">
-            <a href="#roadmaps">Roadmaps</a>
+            <Link to="#roadmaps">Roadmaps</Link>
             <Link to="/roadmaps/guides">Guides</Link>
-            <a href="#community">Community</a>
-            <a href="#about">About</a>
+            <Link to="#community">Community</Link>
+            <Link to="#about">About</Link>
           </div>
         </div>
         <div className="page-width footer-bottom">
           <p>Learning in public, one useful step at a time.</p>
           <span>© 2026 DevPath Studio</span>
           <div>
-            <a href="#about">Privacy</a>
-            <a href="#about">Terms</a>
+            <Link to="#about">Privacy</Link>
+            <Link to="#about">Terms</Link>
           </div>
         </div>
       </footer>
-      
-      <section className="stakeholder-forms" aria-label="Stakeholder forms">
-      </section>
+
+      <section
+        className="stakeholder-forms"
+        aria-label="Stakeholder forms"
+      ></section>
     </>
   );
 }
