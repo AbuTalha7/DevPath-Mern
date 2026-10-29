@@ -2,6 +2,9 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import AdminCrudPage from "./AdminCrudPage.jsx";
+import AdminHeader from "./AdminHeader.jsx";
+import { roadmapsApi, usersApi } from "../services/api.js";
 
 const adminSettingsSchema = z.object({
   name: z.string().trim().min(2, "Display name must be at least 2 characters"),
@@ -111,19 +114,25 @@ function BackToSiteLink({ onNavigate }) {
 function AdminTablePage({ section }) {
   if (section === "users") {
     return (
-      <AdminDataTable
+      <AdminCrudPage
         eyebrow="USER MANAGEMENT"
         title="Manage users"
-        description="Create, search, edit, and manage every account on DevPath."
-        action="Add user"
-        actionTo="/admin/users/new"
-        editTo="/admin/users/edit"
-        statusColumn={3}
-        columns={["Name", "Email", "Role", "Status", "Actions"]}
-        rows={[
-          ["Alex Morgan", "alex@example.com", "Learner", "Active"],
-          ["Samira Khan", "samira@example.com", "Mentor", "Active"],
-          ["Northstar Labs", "hello@northstar.dev", "Organization", "Pending"],
+        description="Search and review every account on DevPath."
+        api={usersApi}
+        columns={[
+          { key: "name", label: "Name" },
+          { key: "email", label: "Email" },
+          { key: "role", label: "Role" },
+        ]}
+        fields={[
+          { name: "name", label: "Name", type: "text" },
+          { name: "email", label: "Email", type: "email" },
+          {
+            name: "role",
+            label: "Role",
+            type: "select",
+            options: ["learner", "mentor", "organization"],
+          },
         ]}
       />
     );
@@ -135,11 +144,8 @@ function AdminTablePage({ section }) {
         eyebrow="LEARNERS"
         title="Learner accounts"
         description="Review learner activity and progress across every roadmap."
-        action="Add learner"
-        actionTo="/admin/learners/new"
-        editTo="/admin/learners/edit"
         statusColumn={null}
-        columns={["Name", "Roadmap", "Progress", "Last active", "Actions"]}
+        columns={["Name", "Roadmap", "Progress", "Last active"]}
         rows={[
           ["Alex Morgan", "Frontend", "68%", "Today"],
           ["Maya Patel", "Data Analyst", "42%", "Yesterday"],
@@ -155,11 +161,8 @@ function AdminTablePage({ section }) {
         eyebrow="MENTORS"
         title="Mentor accounts"
         description="Manage mentors and review their availability and expertise."
-        action="Add mentor"
-        actionTo="/admin/mentors/new"
-        editTo="/admin/mentors/edit"
         statusColumn={3}
-        columns={["Name", "Specialty", "Availability", "Status", "Actions"]}
+        columns={["Name", "Specialty", "Availability", "Status"]}
         rows={[
           ["Samira Khan", "Frontend", "Available", "Active"],
           ["Daniel Reed", "DevOps", "Busy", "Active"],
@@ -175,11 +178,8 @@ function AdminTablePage({ section }) {
         eyebrow="ORGANIZATIONS"
         title="Organization accounts"
         description="Manage companies and teams using DevPath for learning."
-        action="Add organization"
-        actionTo="/admin/organizations/new"
-        editTo="/admin/organizations/edit"
         statusColumn={3}
-        columns={["Organization", "Email", "Members", "Status", "Actions"]}
+        columns={["Organization", "Email", "Members", "Status"]}
         rows={[
           ["Northstar Labs", "hello@northstar.dev", "24", "Pending"],
           ["Brightline Studio", "team@brightline.dev", "18", "Active"],
@@ -191,18 +191,32 @@ function AdminTablePage({ section }) {
 
   if (section === "roadmaps") {
     return (
-      <AdminDataTable
+      <AdminCrudPage
         eyebrow="ROADMAPS"
         title="Roadmap library"
-        description="Create and maintain the learning paths shown on DevPath."
-        action="Add roadmap"
-        actionTo="/admin/roadmaps/new"
-        editTo="/admin/roadmaps/edit"
-        columns={["Title", "Category", "Learners", "Status", "Actions"]}
-        rows={[
-          ["Frontend", "Role-based", "12,480", "Published"],
-          ["Python", "Skill-based", "9,210", "Published"],
-          ["AI Engineer", "Role-based", "4,805", "Draft"],
+        description="Review the learning paths shown on DevPath."
+        api={roadmapsApi}
+        columns={[
+          { key: "title", label: "Title" },
+          { key: "slug", label: "Slug" },
+          { key: "category", label: "Category" },
+          { key: "status", label: "Status" },
+        ]}
+        fields={[
+          { name: "title", label: "Title", type: "text" },
+          { name: "slug", label: "Slug", type: "text" },
+          {
+            name: "category",
+            label: "Category",
+            type: "select",
+            options: ["role", "skill", "practice"],
+          },
+          {
+            name: "status",
+            label: "Status",
+            type: "select",
+            options: ["published", "draft"],
+          },
         ]}
       />
     );
@@ -213,11 +227,8 @@ function AdminTablePage({ section }) {
       eyebrow="GUIDES & COURSES"
       title="Content library"
       description="Manage guides, lesson packs, and educational resources."
-      action="Add content"
-      actionTo="/admin/content/new"
-      editTo="/admin/content/edit"
       statusColumn={3}
-      columns={["Title", "Type", "Author", "Status", "Actions"]}
+      columns={["Title", "Type", "Author", "Status"]}
       rows={[
         [
           "Environment variables in Python",
@@ -236,9 +247,6 @@ function AdminDataTable({
   eyebrow,
   title,
   description,
-  action,
-  actionTo,
-  editTo,
   columns,
   rows,
   statusColumn = 3,
@@ -249,8 +257,6 @@ function AdminDataTable({
         eyebrow={eyebrow}
         title={title}
         description={description}
-        action={action}
-        actionTo={actionTo}
       />
       <section className="admin-panel">
         <div className="admin-toolbar">
@@ -284,14 +290,6 @@ function AdminDataTable({
                       )}
                     </td>
                   ))}
-                  <td>
-                    <Link className="admin-table-action" to={editTo}>
-                      Edit
-                    </Link>
-                    <button className="admin-table-action" type="button">
-                      Delete
-                    </button>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -299,27 +297,6 @@ function AdminDataTable({
         </div>
       </section>
     </>
-  );
-}
-
-function AdminHeader({ eyebrow, title, description, action, actionTo }) {
-  return (
-    <header className="admin-page-header">
-      <div>
-        <p className="admin-eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </div>
-      {actionTo ? (
-        <Link className="admin-button primary" to={actionTo}>
-          {action}
-        </Link>
-      ) : action ? (
-        <button className="admin-button primary" type="button">
-          {action}
-        </button>
-      ) : null}
-    </header>
   );
 }
 
